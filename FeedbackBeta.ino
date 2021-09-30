@@ -60,6 +60,7 @@ void loop() {
   analogWrite(10, dutyCycle * 255);
   */
 
+  // Actual PWM driver: write to pin 10 with a duty cycle of 0.554 (5 V -> 11.2 V)
   analogWrite(10, 0.554 * 255);
   
 }
