@@ -7,15 +7,12 @@
 
 */
 
-/*
 #ifndef THERMISTOR_H_
 #define THERMISTOR_H_
-*/
 
 #include "Arduino.h"
 
 /* Arduino Hardware Defines */
-#define PIN_READ_THERMISTOR  A1     // Pin used to read temperature (via voltage divider)
 #define DIGITAL_RESOLUTION   1024   // Output of analogRead() is between 0 and 1024
 #define OPERATING_VOLTAGE    5.0    // analogRead()'s full scale range is 0 to 5 V; note 5 V is the operating
                                     // voltage of the Arduino when powered by the 9V battery
@@ -24,7 +21,7 @@
 
 /* Thermistor Constant Defines */
 #define B_CONST 3350  // From datasheet, B = 3350-3399 Kelvin
-#define T_0   293     // Room temperature = 293 Kelvin
+#define T_0   293.15     // Room temperature = 293.15 Kelvin
 #define R_0   10000   // Resistance in ambient temperature = 10k Ohm
 
 #define ROOM_TEMP_F   67.73   // Room temperature in Fahrenheit = 67.73 F
@@ -35,6 +32,29 @@
     of the thermistor (T_0, R_0, B_CONST) as well as the relevant physical measurements that
     are used to interpret the temperature of the environment.
 */
+
+class Thermistor
+{
+  public:
+    // Public Member Functions
+    Thermistor(int pin);
+    void update();
+    void updateVoltage();
+    void updateResistance();
+    void updateTemperature();
+
+    // Public Member Variables
+    int   resistance;
+    float tempKelvin;
+    float tempFahrenheit;
+    float voltage;
+    
+  private:
+    int   _pin;
+
+};
+
+/*
 struct _Thermistor
 {
   unsigned int resistance;      // Resistance of thermistor (contingent upon temperature)
@@ -59,5 +79,6 @@ void Thermistor_updateResistance(Thermistor* therm_p);
 
 // Derive temperature (in Kelvin) using resistance value from _getThermistorResistance(), and convert to Fahrenheit
 void Thermistor_updateTemperature(Thermistor* therm_p);
+*/
 
-//#endif /* THERMISTOR_H_ */
+#endif /* THERMISTOR_H_ */
