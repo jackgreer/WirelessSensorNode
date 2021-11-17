@@ -54,15 +54,6 @@ SoftwareSerial btSerial(PIN_RX, PIN_TX);
 
 void setup() {
 
-  // The following commented-out snippet is used when testing while Arduino is plugged in via USB.
-  /*
-  Serial.begin(9600);
-  Serial.print("Sketch:    ");
-  Serial.println(__FILE__);
-  Serial.print("Uploaded:  ");
-  Serial.println(__DATE__);
-  */
-
   btSerial.begin(BT_BAUDRATE);
   boostConverter.update();    // Initialize duty cycle based on input voltage
   
