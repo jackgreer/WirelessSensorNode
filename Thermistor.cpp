@@ -63,8 +63,7 @@ void Thermistor::updateTemperature(){
   // R_therm = (R_0)*exp(B_CONST * ( (1/T_therm) - (1/T_0) )
   // We can manipulate this formula to derive the following value for thermistor temperature T_therm:
   // T_therm = (B_CONST * T_0) / ((T_0 * ln(R/R0)) + B_CONST)
-  float denominator = (log((float) resistance / R_0) + B_CONST);
-  tempKelvin = (B_CONST * T_0) / (log((float) resistance / R_0) + B_CONST);
+  tempKelvin = (B_CONST * T_0) / ( (T_0 * log((float) resistance / R_0)) + B_CONST);
 
   // Convert this value to Fahrenheit using the formula K = ((F - 32) * (5/9)) + 273.15
   // From this we can derive F = ((9/5) * (K - 273.15)) + 32

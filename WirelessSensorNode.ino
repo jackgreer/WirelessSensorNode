@@ -30,7 +30,7 @@
 #define WAIT_5_MIN            300000
 // In real-life implementation, thermistor data should be reported every 5 minutes
 
-#define THERM_UPDATE_INTERVAL      WAIT_30_SEC
+#define THERM_UPDATE_INTERVAL      WAIT_1_SEC
 #define PWM_UPDATE_INTERVAL        WAIT_30_SEC
 
 /* Bluetooth Defines */
@@ -54,6 +54,8 @@ SoftwareSerial btSerial(PIN_RX, PIN_TX);
 
 void setup() {
 
+  //Serial.begin(9600);
+  
   btSerial.begin(BT_BAUDRATE);
   boostConverter.update();    // Initialize duty cycle based on input voltage
   
@@ -91,7 +93,7 @@ void loop() {
     thermistor.update();
 
     // Uncomment this line when testing WITH the Arduino plugged in via USB.
-    //Thermistor_serialPrintStatus(thermistor);
+    Thermistor_serialPrintStatus(thermistor);
     
     serialSendThermistorData(btSerial, thermistor);
 

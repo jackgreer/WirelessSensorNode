@@ -20,9 +20,10 @@
 #define THERM_VDIV_RESISTOR  9950  // 10k Ohm resistor (measured value 9.95k) in series with thermistor
 
 /* Thermistor Constant Defines */
-#define B_CONST 3350  // From datasheet, B = 3350-3399 Kelvin
-#define T_0   293.15     // Room temperature = 293.15 Kelvin
-#define R_0   10000   // Resistance in ambient temperature = 10k Ohm
+//#define B_CONST 3350    // From datasheet, B = 3350-3399 Kelvin
+#define B_CONST 2508    // Calculated B_CONST value is 2508 K
+#define T_0   293.15    // Room temperature = 293.15 Kelvin
+#define R_0   11350     // Measured resistance in ambient temperature = 11.35 kOhm
 
 #define ROOM_TEMP_F   67.73   // Room temperature in Fahrenheit = 67.73 F
 // TODO: note these values may be altered to correspond with actual measurements taken later
