@@ -11,14 +11,28 @@
 # most important structure comes from this tutorial, and I want to give the appropriate credit
 # where it is due.
 
+# Since Milestone 4, I have added a feature that displays a graphic on the screen related to the
+# temperature of the thermistor.
+
 import serial
 import threading
 import queue
 import tkinter as tk
+from PIL import ImageTk, Image
+from enum import Enum
 from datetime import datetime
+import struct
 
-com_port = 'COM8'
+global coldTempImage
+global hotTempImage
+
+com_port = 'COM6'
 baudrate = 9600
+
+# This is just for switching between the hot temperature image and the cold temperature image
+class TemperatureState(Enum):
+    HOT = 1
+    COLD = 2
 
 # This method instantiates a thread for the program to read incoming serial data (in my case,
 # from the Bluetooth module connected to the Arduino). The multithreading is required because
@@ -42,16 +56,24 @@ class App(tk.Tk):
         tk.Tk.__init__(self)
 
         self.title('ECE 2804 - Wireless Sensor Node Desktop App')
-        self.geometry("640x120") # Blessed Resolution
+        self.geometry("1200x600") # Blessed Resolution
 
-        frame_description = tk.Frame(self, padx=5, pady=5)
-        frame_description.grid(row=0, column=0)
-        self.text_description = tk.Text(frame_description, wrap='word', font='TimesNewRoman 12',
+        self.frame_description = tk.Frame(self, padx=2, pady=2)
+        self.frame_description.grid(row=0, column=0)
+        self.text_description = tk.Text(self.frame_description, wrap='word', font='TimesNewRoman 12',
                                         bg=self.cget('bg'), relief='flat')
         self.text_description.insert('end', 'Temperature (F): \n')
         self.text_description.insert(2.0, 'Data Last Received: ')
-        tk.Label(frame_description, padx=5, pady=5).pack() # Attach description frame to main window
+        tk.Label(self.frame_description, padx=5, pady=5).pack() # Attach description frame to main window
         self.text_description.pack()
+
+        # Graphics which change in response to temperature
+        self.cold_image = ImageTk.PhotoImage(Image.open("ice400.png"))
+        self.hot_image = ImageTk.PhotoImage(Image.open("fire400.png"))
+        self.temperatureState = TemperatureState.COLD
+        self.label = tk.Label(self, image=self.cold_image)
+        self.label.grid(row=0, column=1)
+
 
         # Initialize a queue for threading; such that the program can both refresh the GUI
         # and also check for serial input in COM8.
@@ -67,11 +89,26 @@ class App(tk.Tk):
         # the date displayed.
         while self._queue.qsize():
             try:
+                newTemperature = self._queue.get()
                 self.text_description.delete(1.17, 2.0)
-                self.text_description.insert(1.17, self._queue.get())
+                self.text_description.insert(1.17, newTemperature)
 
                 self.text_description.delete(2.19, 'end')
                 self.text_description.insert(2.19, datetime.now().strftime("%m/%d/%Y, %H:%M:%S"))
+                # Cut off the /r/n at the end of the transmitted message, then convert to bytes
+                # from string; then convert to int from bytes
+                newTemp_int = int(bytes.decode(newTemperature.strip()))
+                #formerly = bytes.decode(sneed)
+                #chuck = int(formerly)
+                #print(sneed)
+                #print(chuck)
+
+                if(newTemp_int <= 58 and self.temperatureState == TemperatureState.HOT):
+                    self.temperatureState = TemperatureState.COLD
+                    self.label['image'] = self.cold_image
+                elif(newTemp_int > 58 and self.temperatureState == TemperatureState.COLD):
+                    self.temperatureState = TemperatureState.HOT
+                    self.label['image'] = self.hot_image
 
             except queue.Empty:
                 pass
@@ -79,6 +116,12 @@ class App(tk.Tk):
         # Wait to check for incoming data for 100ms. This can probably be refined, since right 
         # now, the Arduino only sends data every 30 seconds.
         self.after(100, self.process_serial)
+
+    def open_graphic(self):
+        coldTempImage = "ice400.png"
+        img = ImageTk.PhotoImage(file = coldTempImage)
+        label = tk.Label(self.frame_description, image=img)
+        label.pack()
 
 if __name__ == '__main__':
     app = App()
