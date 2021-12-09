@@ -3,7 +3,7 @@
 
    Author: Jack Greer
    Created on: 13 Nov 2021
-   Date last modified: 16 Nov 2021
+   Date last modified: 8 Dec 2021
 
 */
 
@@ -54,7 +54,7 @@ SoftwareSerial btSerial(PIN_RX, PIN_TX);
 
 void setup() {
 
-  //Serial.begin(9600);
+  Serial.begin(9600);
   
   btSerial.begin(BT_BAUDRATE);
   boostConverter.update();    // Initialize duty cycle based on input voltage
@@ -104,6 +104,8 @@ void loop() {
 
   // Drive PWM to boost converter circuit
   analogWrite(PIN_PWM, boostConverter.dutyCycle);
+  //analogWrite(PIN_PWM, 153);
+
 }
 
 /*
@@ -185,7 +187,7 @@ void Thermistor_serialPrintStatus(Thermistor therm) {
    Transmit thermistor temperature data via UART
 */
 void serialSendThermistorData(SoftwareSerial swSerial, Thermistor therm) {
-  swSerial.println(therm.tempFahrenheit);   // Send temperature in Kelvin to desktop app (serial port)
+  swSerial.println(int(therm.tempFahrenheit));   // Send temperature in Kelvin to desktop app (serial port)
   Serial.println("I just sent data fr fr");
   Serial.println(therm.tempKelvin);
 

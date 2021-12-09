@@ -3,7 +3,7 @@
  * 
  * Author: Jack Greer
  * Created on: 13 Nov 2021
- * Date last modified: 13 Nov 2021
+ * Date last modified: 8 Dec 2021
  */
 
 #ifndef BOOSTCONVERTER_H_
@@ -14,8 +14,8 @@
 /* analogVo = (V_out) * 64 (due to voltage divider resistors); analogVb = (V_battery) * 64 */
 #define ANALOG_VDIV_CONVERSION_FACTOR 64
 
-#define MAX_SAFE_DUTY_CYCLE    170    // Equivalent to D = 0.67
-                                      // Worst case scenario 5 V in -> 5(1/0.33) -> 15.15 V output
+#define MAX_SAFE_DUTY_CYCLE    190    // Equivalent to D = 0.75
+                                      // Absolutely not safe
 
 #define DUTY_CYCLE_UPPER_LIMIT      255    // analogWrite() duty cycle an 8 bit unsigned int, not a float
 #define DESIRED_V_OUT_HIGH          2457   // = 12 V * (1024 / 5)

@@ -3,7 +3,7 @@
 
    Author: Jack Greer
    Created on: 13 Nov 2021
-   Date last modified: 13 Nov 2021
+   Date last modified: 8 Dec 2021
 
 */
 
@@ -20,7 +20,7 @@ Thermistor::Thermistor(int pin){
   resistance = R_0;
   tempKelvin = T_0;
   tempFahrenheit = ROOM_TEMP_F;
-  voltage = 2.5;   // At room temperature, therm. resistance should be equal to 10k and voltage at divider should be 2.5 V
+  voltage = 2.5;
 }
 
 /*
@@ -64,6 +64,9 @@ void Thermistor::updateTemperature(){
   // We can manipulate this formula to derive the following value for thermistor temperature T_therm:
   // T_therm = (B_CONST * T_0) / ((T_0 * ln(R/R0)) + B_CONST)
   tempKelvin = (B_CONST * T_0) / ( (T_0 * log((float) resistance / R_0)) + B_CONST);
+  Serial.println( (float) resistance / R_0);
+  Serial.println(log((float) resistance / R_0));
+  Serial.println((T_0 * log((float) resistance / R_0)));
 
   // Convert this value to Fahrenheit using the formula K = ((F - 32) * (5/9)) + 273.15
   // From this we can derive F = ((9/5) * (K - 273.15)) + 32

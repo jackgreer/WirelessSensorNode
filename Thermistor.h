@@ -3,7 +3,7 @@
 
    Author: Jack Greer
    Created on: 3 Nov 2021
-   Date last modified: 13 Nov 2021
+   Date last modified: 8 Dec 2021
 
 */
 
@@ -21,9 +21,10 @@
 
 /* Thermistor Constant Defines */
 //#define B_CONST 3350    // From datasheet, B = 3350-3399 Kelvin
-#define B_CONST 2508    // Calculated B_CONST value is 2508 K
+#define B_CONST 2508.0    // Calculated B_CONST value is 2508 K
 #define T_0   293.15    // Room temperature = 293.15 Kelvin
-#define R_0   11350     // Measured resistance in ambient temperature = 11.35 kOhm
+#define R_0   11350.0     // Measured resistance in ambient temperature = 11.35 kOhm
+//#define R_0 10000       // Also from datasheet
 
 #define ROOM_TEMP_F   67.73   // Room temperature in Fahrenheit = 67.73 F
 // TODO: note these values may be altered to correspond with actual measurements taken later
@@ -54,32 +55,5 @@ class Thermistor
     int   _pin;
 
 };
-
-/*
-struct _Thermistor
-{
-  unsigned int resistance;      // Resistance of thermistor (contingent upon temperature)
-  unsigned int tempKelvin;      // Temperature of thermistor in Kelvin
-  float        tempFahrenheit;  // Temperature of thermistor in Fahrenheit
-  float        voltage;         // Voltage between 10k resistor and thermistor in divider circuit, measured in V (rather than 0-1024)
-};
-typedef struct _Thermistor Thermistor;
-
-// Construct Thermistor object
-Thermistor Thermistor_construct();
-
-// Get actual temperature value - will include all the other functions below
-// Basically the main() function for the thermistor
-void Thermistor_update(Thermistor* therm_p);
-
-// Read voltage from divider circuit
-void Thermistor_updateVoltage(Thermistor* therm_p);
-
-// Derive resistance of thermistor using the reading from _getDividedVoltage()
-void Thermistor_updateResistance(Thermistor* therm_p);
-
-// Derive temperature (in Kelvin) using resistance value from _getThermistorResistance(), and convert to Fahrenheit
-void Thermistor_updateTemperature(Thermistor* therm_p);
-*/
 
 #endif /* THERMISTOR_H_ */
